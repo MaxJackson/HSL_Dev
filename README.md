@@ -5,10 +5,10 @@ This repo contains python scripts for analyzing MEA electrophysiology data.
 
 
 ### QT_dev.py
-Analyzes QT intervals. The user selects a file, the channels to analyze within the file, then the QT region for each selected channel. The output is written to a text file and to the command line for review. 
+Analyzes QT intervals. The user selects a file, the channels to analyze within the file, then the QT region for each selected channel. The output is written to the command line for review. 
 
 ### CV_dev.py
-Analyzes conduction velocity. The user selects a file, the two channels across which to analyze conduction velocity, then the region of data across which to analyze conduction velocity. The output is written to a text file and the command line for review. 
+Analyzes conduction velocity. The user selects a file, the two channels across which to analyze conduction velocity, then the region of data across which to analyze conduction velocity. The output is written to the command line for review. 
 
 ### Neuro_Pca_dev.py 
 Analyzes and graphs spike features. The user selects a file and the channels to analyze within that file. 
