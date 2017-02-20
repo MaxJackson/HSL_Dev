@@ -21,6 +21,7 @@ def get_dirname():
 
 dirname = get_dirname()
 dirs = [x[0] for x in os.walk(dirname)]
+#print(dirname)
 channels_to_convert = [61, 53, 52, 41, 44, 54, 51, 42, 43, 31]
 
 output_dir = cwd = os.getcwd() + "\\Output\\"
@@ -28,7 +29,18 @@ output_dir = cwd = os.getcwd() + "\\Output\\"
 if not os.path.exists(output_dir):
 	os.makedirs(output_dir)
 
-with open('test.txt', 'w') as f:
+	
+output_file = dirname.split("/")[-1] + "_datatool_script"
+i = 1
+if os.path.isfile(output_file + ".txt"):
+	while os.path.isfile(output_file + "_" + str(i) + ".txt"):
+		i += 1
+	output_file = output_file + "_" + str(i) + ".txt"
+else: 
+	output_file = output_file + ".txt"
+
+	
+with open(output_file, 'w') as f:
 	for dir in dirs:
 		for filename in os.listdir(dir):
 			if filename.endswith(".mcd"):
