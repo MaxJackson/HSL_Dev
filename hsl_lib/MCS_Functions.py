@@ -1,49 +1,89 @@
-
+import os
 import numpy as np
-import neuroshare as ns
+#import neuroshare as ns
 import matplotlib.pyplot as plt 
+from Tkinter import Tk
+from tkFileDialog import askdirectory, askopenfilename
 from MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike
 
-def get_data(full_file_path, channels_to_read):
-    """
-        This function extracts the data from a given .mcd file.
-        input:
-            full_file_path(string), channels_to_read([int])
-        output:
-            all_channels([MCS_Data_Channel])
-            analog_channels([MCS_Analog_Channels])
-            sampling_rate(float)
-    """
+def get_dirname():
+	Tk().withdraw()
+	print("Initializing Dialogue...\nPlease select a directory.")
+	dirname = askdirectory(initialdir=os.getcwd(),title='Please select a directory')
+	if len(dirname) > 0:
+		print ("You chose %s" % dirname)
+		return dirname
+	else: 
+		dirname = os.getcwd()
+		print ("\nNo directory selected - initializing with %s \n" % os.getcwd())
+		return dirname
 
-    print ("Processing " + full_file_path) 
-    fd = ns.File(full_file_path)
-    sampling_rate = (1.0/fd.time_stamp_resolution)
-    print("Sampling Rate: " + str(sampling_rate))
-    counter = len(fd.entities)
-    all_channels = []
-    analog_channels = []
+def get_filename():
+	Tk().withdraw()
+	print("Initializing Dialogue... \nPlease select a file.")
+	filename = askopenfilename(initialdir=os.getcwd(),title='Please select a file')
+	print("You chose " + filename)
+	return filename 
+	
+# def get_data_txt(full_file_path, channels_to_read):
+	# """
+		# This function extracts the data from a MC_DataTool-converted txt file 
+		# input:
+			# full_file_path(string), channels_to_read([int])
+		# output:
+			# all_channels(MCS_Data_Channel)
+			# analog_channels([MCS_Analog_Channels])
+			# sampling_rate(float)
+	# """
+	# print("Processing " + full_file_path)
+	#with open(full_file_path, 'r') as f:
+		
+	
+	
+	# return all_channels, analog_channels, sampling_rate
+	
+	
+### REMOVED PENDING NEUROSHARE INTEGRATION	
+# def get_data_mcd(full_file_path, channels_to_read):
+    # """
+        # This function extracts the data from a given .mcd file.
+        # input:
+            # full_file_path(string), channels_to_read([int])
+        # output:
+            # all_channels([MCS_Data_Channel])
+            # analog_channels([MCS_Analog_Channels])
+            # sampling_rate(float)
+    # """
 
-    for i in range(0, counter):
-        analog1 = fd.entities[i] #open channel 
-        if analog1.entity_type == 2:
-            channel = analog1.label[-2:] #identify channel 
-            #print(channel)
-            if channel.startswith('A'):
-                data, taimes, count = analog1.get_data()
-                print(channel)
-                analog_channel = MCS_Analog_Channel(data, times)
-                analog_channels.append(analog_channel)
+    # print ("Processing " + full_file_path) 
+    # fd = ns.File(full_file_path)
+    # sampling_rate = (1.0/fd.time_stamp_resolution)
+    # print("Sampling Rate: " + str(sampling_rate))
+    # counter = len(fd.entities)
+    # all_channels = []
+    # analog_channels = []
 
-            if not channel.startswith('A') and int(channel) in channels_to_read: #if it is not an analog channel and if the channel is in the range of channels in the pattern
-                data, times, count = analog1.get_data() #load data
+    # for i in range(0, counter):
+        # analog1 = fd.entities[i] #open channel 
+        # if analog1.entity_type == 2:
+            # channel = analog1.label[-2:] #identify channel 
+           # print(channel)
+            # if channel.startswith('A'):
+                # data, taimes, count = analog1.get_data()
+                # print(channel)
+                # analog_channel = MCS_Analog_Channel(data, times)
+                # analog_channels.append(analog_channel)
 
-                data2 = [d + data[0] for d in data]
-                print(channel)
+            # if not channel.startswith('A') and int(channel) in channels_to_read: #if it is not an analog channel and if the channel is in the range of channels in the pattern
+                # data, times, count = analog1.get_data() #load data
+
+                # data2 = [d + data[0] for d in data]
+                # print(channel)
         
-                mcs_data_channel = MCS_Data_Channel(data2, times, channel, sampling_rate)
-                if len(mcs_data_channel.all_spikes) > 0:
-                    all_channels.append(mcs_data_channel)
-    return all_channels, analog_channels, sampling_rate
+                # mcs_data_channel = MCS_Data_Channel(data2, times, channel, sampling_rate)
+                # if len(mcs_data_channel.all_spikes) > 0:
+                    # all_channels.append(mcs_data_channel)
+    # return all_channels, analog_channels, sampling_rate
 
 def plot_mea_waveforms(channels, input_file):
     """

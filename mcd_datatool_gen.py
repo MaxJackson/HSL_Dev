@@ -3,20 +3,10 @@ This script generates conversion text files for MC_Datatool
 """
 
 import os
-from Tkinter import Tk
-from tkFileDialog import askdirectory
 
-def get_dirname():
-	Tk().withdraw()
-	print("Initializing Dialogue...\nPlease select a directory.")
-	dirname = askdirectory(initialdir=os.getcwd(),title='Please select a directory')
-	if len(dirname) > 0:
-		print ("You chose %s" % dirname)
-		return dirname
-	else: 
-		dirname = os.getcwd()
-		print ("\nNo directory selected - initializing with %s \n" % os.getcwd())
-		return dirname
+from hsl_lib.MCS_Functions import get_dirname
+
+
 
 
 dirname = get_dirname()
