@@ -31,13 +31,20 @@ if not os.path.exists(output_dir):
 
 	
 output_file = dirname.split("/")[-1] + "_datatool_script"
+bat_file = dirname.split("/")[-1] + "_datatool_script_bat"
 i = 1
 if os.path.isfile(output_file + ".txt"):
 	while os.path.isfile(output_file + "_" + str(i) + ".txt"):
 		i += 1
 	output_file = output_file + "_" + str(i) + ".txt"
+	bat_file = bat_file + "_" + str(i) + ".bat"
 else: 
 	output_file = output_file + ".txt"
+	bat_file = bat_file + ".bat"
+	
+with open(bat_file, 'w') as f:
+	f.write("MC_Datatool -file " + output_file + " -ascii")
+	print(bat_file)
 
 	
 with open(output_file, 'w') as f:
