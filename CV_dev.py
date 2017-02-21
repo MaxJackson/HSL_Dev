@@ -11,12 +11,9 @@ import os, time, math, sys
 import matplotlib.pyplot as plt 
 import numpy as np
 from hsl_lib.MCS_Objects import CV_Region_Selector
-from hsl_lib.MCS_Functions import get_data, plot_mea_waveforms, plot_cmea_waveforms, get_channels_to_compare, get_spike_time_differences
+from hsl_lib.MCS_Functions import get_data_txt, plot_mea_waveforms, plot_cmea_waveforms, get_channels_to_compare, get_spike_time_differences, get_filename
 
-if len(sys.argv) > 1:
-    full_file_path = str(sys.argv[1])
-else: 
-    full_file_path = '-600 p31.mcd'
+full_file_path = get_filename()
 
 cmea_electrodes = [61, 53, 52, 41, 44, 54, 51, 42, 43, 31]
 cmea_distances = [0.001 * x for x in range(0, len(cmea_electrodes))] # Electrodes are 1mm apart
@@ -24,7 +21,7 @@ cmea_distances = [0.001 * x for x in range(0, len(cmea_electrodes))] # Electrode
 cmea_positions = []
 
 channels_to_read = cmea_electrodes
-all_channels, analog_channels, sampling_rate = get_data(full_file_path, channels_to_read)
+all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path, channels_to_read)
 
 # print(len(analog_channels))
 # plt.plot(analog_channels[0].voltage_data)

@@ -279,9 +279,10 @@ class MCS_Data_Channel(object):
 
 class MCS_Analog_Channel:
 
-    def __init__(self, voltage_data, time_data):
+    def __init__(self, voltage_data, time_data, channel_name):
         self.voltage_data = voltage_data
         self.time_data = time_data
+        self.channel_name = channel_name
 
 
 

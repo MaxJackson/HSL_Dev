@@ -54,3 +54,6 @@ with open(output_file, 'w') as f:
 	for channel in channels_to_convert:
 		writeline = "-s \"Electrode Raw Data:" + str(channel) + "\"\n"
 		f.write(writeline)
+
+	writeline = "-s Analog Raw Data:A1" + "\"\n"
+	f.write(writeline)
