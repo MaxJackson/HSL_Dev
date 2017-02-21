@@ -50,15 +50,11 @@ def get_data_txt(full_file_path, channels_to_read):
 		channel_line = lines[2]
 		channel_numbers = [int(x) for x in channel_line.split() if is_int(x)]
 		analog_channel_numbers = [x for x in channel_line.split() if x.startswith('A') and is_int(x[-1])]
-		#print(analog_channels)
-		##print(len(analog_channels))
-		#print(channels_to_read)
 		all_channels = []
 		analog_channels = []
 		sampling_rate = 1000.0 / (float(lines[5].split()[0]) - float(lines[4].split()[0]))
 		time_data = []
-		#for line in lines[4:]:
-		#	time_data.append(float(line.split()[0]))
+
 
 		all_channel_data = []
 		analog_channel_data = []
