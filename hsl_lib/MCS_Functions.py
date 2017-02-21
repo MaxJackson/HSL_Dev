@@ -48,36 +48,39 @@ def get_data_txt(full_file_path, channels_to_read):
 	with open(full_file_path, 'r') as f:
 		lines = f.readlines()
 		channel_line = lines[2]
-		channel_numbers = [x for x in channel_line.split() if is_int(x)]
-		analog_channels = [x for x in channel_line.split() if x.startswith('A') and is_int(x[-1])]
-		print(analog_channels)
+		channel_numbers = [int(x) for x in channel_line.split() if is_int(x)]
+		analog_channel_numbers = [x for x in channel_line.split() if x.startswith('A') and is_int(x[-1])]
+		#print(analog_channels)
+		##print(len(analog_channels))
+		#print(channels_to_read)
 		all_channels = []
 		analog_channels = []
 		sampling_rate = 1000.0 / (float(lines[5].split()[0]) - float(lines[4].split()[0]))
 		time_data = []
-		for line in lines[4:]:
-			time_data.append(float(line.split()[0]))
+		#for line in lines[4:]:
+		#	time_data.append(float(line.split()[0]))
 
 		all_channel_data = []
+		analog_channel_data = []
 		for i in range(0, len(channel_numbers)):
 			all_channel_data.append([])
 		for line in lines[4:]:
+			time_data.append(float(line.split()[0]))
+			analog_channel_data.append(float(line.split()[-1]))
 			data_line = line.split()[1:]
 			for i in range(0, len(channel_numbers)):
-				all_channel_data[i].append(float(data_line[i]))
+				if channel_numbers[i] in channels_to_read:
+					all_channel_data[i].append(float(data_line[i]))
 		for i in range(0, len(channel_numbers)):
+			if all_channel_data[i]:
+				mcs_data_channel = MCS_Data_Channel(all_channel_data[i], time_data, int(channel_numbers[i]), sampling_rate)
+				all_channels.append(mcs_data_channel)
 
-			mcs_data_channel = MCS_Data_Channel(all_channel_data[i], time_data, int(channel_numbers[i]), sampling_rate)
-			all_channels.append(mcs_data_channel)
-		for i in range(0, len(analog_channels)):
-			channel_data = []
-			print("reading A1")
-			for line in lines[4:]:
-				data_line = line.split()[-(len(analog_channels))+i]
-				channel_data.append(data_line)
-			mcs_analog_channel = MCS_Analog_Channel(channel_data, time_data, analog_channels[i])
+		if analog_channel_numbers:
+			mcs_analog_channel = MCS_Analog_Channel(analog_channel_data, time_data, analog_channel_numbers[0])
 			analog_channels.append(mcs_analog_channel)
 
+		
 
 	
 	return all_channels, analog_channels, sampling_rate
