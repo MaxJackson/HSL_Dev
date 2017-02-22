@@ -72,6 +72,7 @@ class MCS_Spike(object):
         return spike_max, spike_positive_start_time, spike_max_time, spike_positive_end_time, area_under_curve_positive, spike_half_peak_width_positive, spike_positive_slope
 
     def analyze_negative_peak(self, voltage_data, timestamp_data):
+
         """
         This function analyzes the negative peak of the voltage data.
         input:
@@ -133,6 +134,8 @@ class MCS_Spike(object):
         self.channel = channel
         self.voltage_data = [x - voltage_data[0] for x in voltage_data]
         self.timestamp_data = timestamp_data
+        print("Generating spike...")
+
 
         # Positive Peak
         spike_max, spike_positive_start_time, spike_max_time, spike_positive_end_time, area_under_curve_positive, spike_half_peak_width_positive, spike_positive_slope = self.analyze_positive_peak(voltage_data, timestamp_data)
@@ -259,6 +262,8 @@ class MCS_Data_Channel(object):
         self.time_data = time_data
         self.channel_number = int(channel_number)
         self.sampling_rate = sampling_rate
+        print("Initializing MCS Channel " + str(channel_number))
+        print(str(len(voltage_data)) + " data points")
 
         voltage_mean, voltage_std = self.get_stats(voltage_data)
         self.voltage_mean = voltage_mean
@@ -294,6 +299,7 @@ class QT_Region_Selector(object):
     """
     
     def __init__(self, qt_channel):
+        plt.close()
         self.qt_channel = qt_channel
         self.title = "Channel " + str(qt_channel.channel_number)
 

@@ -3,6 +3,8 @@ import numpy as np
 #import neuroshare as ns
 import matplotlib.pyplot as plt 
 from Tkinter import Tk
+from matplotlib.mlab import PCA as mlabPCA
+from mpl_toolkits.mplot3d import Axes3D
 from tkFileDialog import askdirectory, askopenfilename
 from MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike
 
@@ -123,6 +125,40 @@ def get_data_txt(full_file_path, channels_to_read):
 				# if len(mcs_data_channel.all_spikes) > 0:
 					# all_channels.append(mcs_data_channel)
 	# return all_channels, analog_channels, sampling_rate
+
+def get_spike_feature_pca(channel):
+	pca_matrix = []
+	for spike in channel.all_spikes:
+		row = []
+		row.append(spike.spike_max)
+		row.append(spike.spike_positive_slope)
+		row.append(spike.spike_half_peak_width_negative)
+		pca_matrix.append(row)
+	pca_matrix = np.array(pca_matrix)
+	#print(len(pca_matrix))
+	#print(len(pca_matrix[0]))
+	spike_feature_pca = mlabPCA(pca_matrix)
+
+	return spike_feature_pca
+
+def plot_spike_feature_pca(spike_feature_pca, channel_number, pca_plot_filename):
+		
+	fig = plt.figure()
+	ax = fig.add_subplot(111, projection='3d')
+	ax.scatter(spike_feature_pca.Y[:,0], spike_feature_pca.Y[:,1], spike_feature_pca.Y[:,2], c='b', marker='o')
+
+	ax.set_xlabel("Spike Height")
+	ax.set_ylabel("Spike Positive Slope")
+	ax.set_zlabel("Spike Half Peak Width")
+	
+	ax.set_xlim(-4, 4)
+	ax.set_ylim(-4, 4)
+	ax.set_zlim(-4, 4)
+
+	plt.legend()
+	plt.title(str(channel_number))
+	plt.savefig(pca_plot_filename)
+	plt.close()
 
 def plot_mea_waveforms(channels, input_file):
 	"""

@@ -8,6 +8,8 @@ Download and install Anaconda for Python 2.7, found here: https://www.continuum.
 
 Download this repository and unzip it in your directory of choice. 
 
+Double-click on setup.bat to run the setup batch file. 
+
 
 ## Usage
 To use these scripts, double click on their associated batch file. Alternatively, open a command line in the script's directory and enter `python script_name.py`. 
