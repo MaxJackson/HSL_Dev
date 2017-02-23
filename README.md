@@ -25,8 +25,8 @@ Analyzes QT intervals. The user selects a file, the channels to analyze within t
 ### CV_dev.py
 Analyzes conduction velocity. The user selects a file, the two channels across which to analyze conduction velocity, then the region of data across which to analyze conduction velocity. The output is written to the command line for review. 
 
-### Neuro_Pca_dev.py 
-Analyzes and graphs spike features. The user selects a file and the channels to analyze within that file. 
+### spike_PCA_dev.py 
+Analyzes and graphs spike features. The user selects a file and the channels to analyze within that file. The script generates and saves full MEA plots of voltage data, then spike PCA plots for each individual channel. 
 
 ### mcd_datatool_gen.py 
 Generates bulk conversion scripts for MC DataTool. The user selects a folder, then the script generates a conversion script for MC_Datatool to convert all of the .mcd files in the folder and its subfolders. 
