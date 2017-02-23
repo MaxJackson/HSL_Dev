@@ -134,7 +134,7 @@ class MCS_Spike(object):
         self.channel = channel
         self.voltage_data = [x - voltage_data[0] for x in voltage_data]
         self.timestamp_data = timestamp_data
-        print("Generating spike...")
+        #print("Generating spike...")
 
 
         # Positive Peak
