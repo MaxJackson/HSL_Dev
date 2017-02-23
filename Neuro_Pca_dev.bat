@@ -1,1 +1,0 @@
-python Neuro_Pca_dev.py 
