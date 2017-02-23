@@ -18,6 +18,10 @@ def main():
 
 
 	full_file_path = get_filename()
+	
+	pca_image_output_folder = full_file_path.split('.')[0] + '/PCA_images/'
+	if not os.path.exists(pca_image_output_folder):
+		os.makedirs(pca_image_output_folder)
 	channels_to_read = range(0, 100)
 
 	all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path, channels_to_read)
@@ -28,7 +32,9 @@ def main():
 	print("Generating spike feature PCA plots")
 	for channel in all_channels:
 		if len(channel.all_spikes) > 3:
-			pca_plot_filename = full_file_path.split('.')[0] + '_pca_' + str(channel.channel_number)
+			
+			pca_plot_filename = pca_image_output_folder + full_file_path.split('/')[-1].split('.')[0] + '_pca_' + str(channel.channel_number)
+			print("Generating " + pca_plot_filename)
 			spike_feature_pca = get_spike_feature_pca(channel)
 			plot_spike_feature_pca(spike_feature_pca, channel.channel_number, pca_plot_filename)
 

@@ -262,8 +262,8 @@ class MCS_Data_Channel(object):
         self.time_data = time_data
         self.channel_number = int(channel_number)
         self.sampling_rate = sampling_rate
-        print("Initializing MCS Channel " + str(channel_number))
-        print(str(len(voltage_data)) + " data points")
+        print("Processing MCS Channel " + str(channel_number))
+        #print(str(len(voltage_data)) + " data points")
 
         voltage_mean, voltage_std = self.get_stats(voltage_data)
         self.voltage_mean = voltage_mean

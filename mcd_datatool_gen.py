@@ -36,7 +36,7 @@ def generate_conversion_script(conversion_script_path, data_output_dir, script_o
 	with open(bat_file, 'a') as b:
 		#print(bat_file)
 		
-		b.write("\nMC_Datatool -file " + conversion_script_path + " -ascii\n")
+		b.write("\nMC_Datatool -file \"" + conversion_script_path + "\" -ascii\n")
 
 dirname = get_dirname()
 dirs = [x[0] for x in os.walk(dirname)]
