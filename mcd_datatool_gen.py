@@ -22,7 +22,7 @@ def generate_conversion_script(conversion_script_path, data_output_dir, script_o
 	with open(conversion_script_path, 'w') as f:
 		writeline = "-i \"" + file_path + "\"\n"
 		f.write(writeline)
-		data_outfile = data_output_dir + "_".join("_".join(file_path.split(":")[-1].split(".")[0].split("/")).split("\\")) + ".txt"
+		data_outfile = data_output_dir + "_".join("_".join(file_path.split(":")[-1][:-4].split("/")).split("\\")) + ".txt"
 		writeline = "-o \"" + data_outfile + "\"\n"
 		f.write(writeline)
 		f.write("\n")	
