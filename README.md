@@ -24,27 +24,27 @@ Analyzes QT intervals. The user selects a file, the channels to analyze within t
 
 ### Conduction Velocity
 To run the conduction velocity script, double-click the 'CV_dev.bat' batch file. 
-![alt tag](walkthrough_images/cv_1.png)
+![alt tag](walkthrough_images/cv_1.png)<br/>
 
 This will open up a dialog to select a file.
 The converted files available will be in the MC_DataTool_Output folder.  
-![alt tag](walkthrough_images/cv_2.png)
+![alt tag](walkthrough_images/cv_2.png)<br/>
 
-Select an input file. 
-![alt tag](walkthrough_images/cv_3.png)
+Select an input file. <br/>
+![alt tag](walkthrough_images/cv_3.png)<br/>
 
 The script will then analyze all spikes across the channels and display the average spikes for review.
-![alt tag](walkthrough_images/cv_4.png)
+![alt tag](walkthrough_images/cv_4.png)<br/>
 
 In the command line, enter the two channels you want to analyze for conduction velocity and press enter.
-![alt tag](walkthrough_images/cv_5.png)
+![alt tag](walkthrough_images/cv_5.png)<br/>
 
 The script will plot the two channels on top of each other in the first row and the stimulation channel(if it exists) in the second row. 
 Click and drag to select a region in which to calculate conduction velocity. The region for the two channels will update in the bottom two rows based on your selection.
-![alt tag](walkthrough_images/cv_6.png)
+![alt tag](walkthrough_images/cv_6.png)<br/>
 
 Press enter to confirm your selection and to calculate conduction velocity. The average conduction velocity between the two channels in the region you selected is displayed in the terminal.
-![alt tag](walkthrough_images/cv_7.png)
+![alt tag](walkthrough_images/cv_7.png)<br/>
 
 ### spike_PCA_dev.py 
 Analyzes and graphs spike features. The user selects a file and the channels to analyze within that file. The script generates and saves full MEA plots of voltage data, then spike PCA plots for each individual channel. 
