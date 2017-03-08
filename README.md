@@ -25,6 +25,9 @@ Analyzes QT intervals. The user selects a file, the channels to analyze within t
 ### CV_dev.py
 Analyzes conduction velocity. The user selects a file, the two channels across which to analyze conduction velocity, then the region of data across which to analyze conduction velocity. The output is written to the command line for review. 
 
+![alt tag](walkthrough_images/cv_1.png)
+
+
 ### spike_PCA_dev.py 
 Analyzes and graphs spike features. The user selects a file and the channels to analyze within that file. The script generates and saves full MEA plots of voltage data, then spike PCA plots for each individual channel. 
 
