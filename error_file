@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "QT_dev.py", line 31, in main
+    all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path, channels_to_read)
+  File "/home/max/Documents/HSL/HSL_Dev/hsl_lib/MCS_Functions.py", line 76, in get_data_txt
+    sampling_rate = 1000.0 / (float(lines[5].split()[0]) - float(lines[4].split()[0]))
+IndexError: list index out of range
+
+Traceback (most recent call last):
+  File "QT_dev.py", line 31, in main
+    all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path, channels_to_read)
+  File "/home/max/Documents/HSL/HSL_Dev/hsl_lib/MCS_Functions.py", line 74, in get_data_txt
+    channel_line = lines[2]
+IndexError: list index out of range
+

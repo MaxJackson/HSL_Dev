@@ -1,12 +1,25 @@
-import os
+import os, time
 import numpy as np
 #import neuroshare as ns
 import matplotlib.pyplot as plt 
 from Tkinter import Tk
 from matplotlib.mlab import PCA as mlabPCA
 from mpl_toolkits.mplot3d import Axes3D
-from tkFileDialog import askdirectory, askopenfilename
+from tkFileDialog import askdirectory, askopenfilename, askopenfilenames
 from MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike
+
+
+def log_error(file, error):
+	error_dir = os.getcwd() + "/error_log/"
+	if not os.path.exists(error_dir):
+		os.makedirs(error_dir)
+	date_time = time.strftime("%d-%m-%Y") + "_" + time.strftime("%H-%M-%S")
+	error_file = error_dir + "error_log_" + date_time + ".txt"
+
+	print("Error processing file at:\n" + file + "\nWriting to " + error_file + "\n")
+	with open("error_file", 'ab+') as e:
+		e.write(error)
+		e.write('\n')
 
 def get_dirname():
 	Tk().withdraw()
@@ -19,6 +32,14 @@ def get_dirname():
 		dirname = os.getcwd()
 		print ("\nNo directory selected - initializing with %s \n" % os.getcwd())
 		return dirname
+
+def get_filenames():
+	Tk().withdraw()
+	print("Initializing Dialogue... \nPlease select a file.")
+	tk_filenames = askopenfilenames(initialdir=os.getcwd(), title='Please select one or more files')
+	filenames = list(tk_filenames)
+	return filenames
+
 
 def get_filename():
 	Tk().withdraw()
@@ -49,6 +70,7 @@ def get_data_txt(full_file_path, channels_to_read):
 	print("Processing " + full_file_path)
 	with open(full_file_path, 'r') as f:
 		lines = f.readlines()
+
 		channel_line = lines[2]
 		channel_numbers = [int(x) for x in channel_line.split() if is_int(x)]
 		analog_channel_numbers = [x for x in channel_line.split() if x.startswith('A') and is_int(x[-1])]
