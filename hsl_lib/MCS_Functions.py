@@ -64,7 +64,7 @@ def is_int(i):
 def get_data(full_file_path, channels_to_read):
 	if full_file_path.endswith('.txt'):
 		all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path)
-	else if full_file_path.endswith(.raw):
+	elif full_file_path.endswith(.raw):
 		all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path)
 	else:
 		print('Invalid File!\n ' + full_file_path)
