@@ -1,12 +1,16 @@
 import os, time
 import numpy as np
+
 #import neuroshare as ns
 import matplotlib.pyplot as plt 
+from numpy import fromfile
 from Tkinter import Tk
 from matplotlib.mlab import PCA as mlabPCA
 from mpl_toolkits.mplot3d import Axes3D
 from tkFileDialog import askdirectory, askopenfilename, askopenfilenames
 from MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike
+
+
 
 
 def log_error(file, error):
@@ -55,6 +59,66 @@ def is_int(i):
 		return True
 	except ValueError:
 		return False
+
+
+def get_data(full_file_path, channels_to_read):
+	if full_file_path.endswith('.txt'):
+		all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path)
+	else if full_file_path.endswith(.raw):
+		all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path)
+	else:
+		print('Invalid File!\n ' + full_file_path)
+		return [], [], 0.0
+
+
+def get_data_raw(full_file_path, channels_to_read):
+	"""
+		This function extracts the data from a MC_DataTool-converted txt file 
+		input:
+			full_file_path(string)
+			channels_to_read([int])
+		output:
+			all_channels(MCS_Data_Channel)
+			analog_channels([MCS_Analog_Channels])
+			sampling_rate(float)
+	"""
+	print("Processing " + full_file_path)
+	with open(full_file_path, 'rb') as f: 
+	    f.readline()
+	    f.readline()
+	    f.readline()
+	    sampling_rate = float(f.readline()[14:-2])
+	    print('Sampling rate: ' + str(sampling_rate))
+	    ADC_zero = float(f.readline()[11:-2])
+	    print('Offset: ' + str(ADC_zero))
+	    El = float(f.readline()[5:11])
+	    print('Scaling: ' + str(El))
+	    channel_names = f.readline()[10:].split(';')
+	    print(str(len(channel_names))+' channels')
+	    channel_names[-1] = channel_names[-1][:-2]
+	    f.readline()
+
+	    data = fromfile(f, dtype='uint16')
+	    data = data.reshape((len(channel_names),-1), order='F').astype('float')
+
+	    for i in range(len(channel_names)):
+	        if channel_names[i].startswith('El'):
+	            data[i] = (data[i]-ADC_zero)*El
+
+	all_channels = []
+	analog_channels = []
+	time_data = [float(x)*1.0/sampling_rate for x in range(len(data[0]))]
+	for i in range(len(channel_names)):
+		if channel_names[i].startswith('A'):
+			mcs_analog_channel = MCS_Analog_Channel(data[i], time_data, int(channel_names[i][-2:]))
+			analog_channels.append(mcs_analog_channel)
+		else:
+			if(int(channel_names[i][-2:]) is in channels_to_read):
+				mcs_data_channel = MCS_Data_Channel(data[i], time_data, int(channel_names[i][-2:]), sampling_rate)
+				all_channels.append(mcs_data_channel)
+
+    return all_channels, analog_channels, sampling_rate
+
 
 def get_data_txt(full_file_path, channels_to_read):
 	"""

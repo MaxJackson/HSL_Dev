@@ -30,7 +30,7 @@ def main():
 
 	for full_file_path in filenames:
 		try:	
-			all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path, channels_to_read)
+			all_channels, analog_channels, sampling_rate = get_data(full_file_path, channels_to_read)
 
 			# print(len(analog_channels))
 			# plt.plot(analog_channels[0].voltage_data)

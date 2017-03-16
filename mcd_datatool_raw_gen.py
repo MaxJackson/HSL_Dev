@@ -33,10 +33,13 @@ def generate_conversion_script(conversion_script_path, data_output_dir, script_o
 
 		writeline = "-s \"Analog Raw Data:A1" + "\"\n"
 		f.write(writeline)
+
+		writeline = "-ToUnsigned"
+		f.write(writeline)
 	with open(bat_file, 'a') as b:
 		#print(bat_file)
 		
-		b.write("\nMC_Datatool -file \"" + conversion_script_path + "\" -ascii\n")
+		b.write("\nMC_Datatool -file \"" + conversion_script_path + "\" -bin -WriteHeader\n")
 
 
 def main():
