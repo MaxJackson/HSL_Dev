@@ -21,7 +21,8 @@ def log_error(file, error):
 	error_file = error_dir + "error_log_" + date_time + ".txt"
 
 	print("Error processing file at:\n" + file + "\nWriting to " + error_file + "\n")
-	with open("error_file", 'ab+') as e:
+	with open(error_file, 'ab+') as e:
+		print(error)
 		e.write(error)
 		e.write('\n')
 
@@ -62,13 +63,16 @@ def is_int(i):
 
 
 def get_data(full_file_path, channels_to_read):
-	if full_file_path.endswith('.txt'):
-		all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path)
-	elif full_file_path.endswith(.raw):
-		all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path)
+	ext = full_file_path.split(".")[-1]
+	if ext == "txt":
+		all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path, channels_to_read)
+	elif ext == "raw":
+		all_channels, analog_channels, sampling_rate = get_data_raw(full_file_path, channels_to_read)
 	else:
 		print('Invalid File!\n ' + full_file_path)
 		return [], [], 0.0
+
+	return all_channels, analog_channels, sampling_rate
 
 
 def get_data_raw(full_file_path, channels_to_read):
@@ -110,14 +114,14 @@ def get_data_raw(full_file_path, channels_to_read):
 	time_data = [float(x)*1.0/sampling_rate for x in range(len(data[0]))]
 	for i in range(len(channel_names)):
 		if channel_names[i].startswith('A'):
-			mcs_analog_channel = MCS_Analog_Channel(data[i], time_data, int(channel_names[i][-2:]))
+			mcs_analog_channel = MCS_Analog_Channel(data[i], time_data, int(channel_names[i][-1]))
 			analog_channels.append(mcs_analog_channel)
 		else:
-			if(int(channel_names[i][-2:]) is in channels_to_read):
+			if(int(channel_names[i][-2:]) in channels_to_read):
 				mcs_data_channel = MCS_Data_Channel(data[i], time_data, int(channel_names[i][-2:]), sampling_rate)
 				all_channels.append(mcs_data_channel)
 
-    return all_channels, analog_channels, sampling_rate
+	return all_channels, analog_channels, sampling_rate
 
 
 def get_data_txt(full_file_path, channels_to_read):

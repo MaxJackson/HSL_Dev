@@ -8,7 +8,7 @@ import os, time, math, sys, traceback
 import matplotlib.pyplot as plt 
 import numpy as np
 from hsl_lib.MCS_Objects import QT_Region_Selector
-from hsl_lib.MCS_Functions import get_data_txt, plot_mea_waveforms, plot_cmea_waveforms, get_channels_to_compare, get_spike_time_differences, get_channels_to_analyze, get_filename, get_filenames, log_error
+from hsl_lib.MCS_Functions import get_data_txt, plot_mea_waveforms, plot_cmea_waveforms, get_channels_to_compare, get_spike_time_differences, get_channels_to_analyze, get_filename, get_filenames, log_error, get_data
 
 
 
