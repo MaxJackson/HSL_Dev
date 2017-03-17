@@ -1,4 +1,4 @@
-import os, time
+import os, time, threading
 import numpy as np
 
 #import neuroshare as ns
@@ -8,7 +8,7 @@ from Tkinter import Tk
 from matplotlib.mlab import PCA as mlabPCA
 from mpl_toolkits.mplot3d import Axes3D
 from tkFileDialog import askdirectory, askopenfilename, askopenfilenames
-from MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike
+from MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike, MCS_Preprocessed_Channel
 
 
 
@@ -75,6 +75,12 @@ def get_data(full_file_path, channels_to_read):
 	return all_channels, analog_channels, sampling_rate
 
 
+def process_channel(channel_array, pre_processed_channel):
+	c = pre_processed_channel
+	#print("processing " + str(c.channel_name))
+	channel_array.append(MCS_Data_Channel(c.voltage_data, c.time_data, c.channel_name, c.sampling_rate))
+	#print("finished " + str(c.channel_name))
+
 def get_data_raw(full_file_path, channels_to_read):
 	"""
 		This function extracts the data from a MC_DataTool-converted txt file 
@@ -86,7 +92,7 @@ def get_data_raw(full_file_path, channels_to_read):
 			analog_channels([MCS_Analog_Channels])
 			sampling_rate(float)
 	"""
-	print("Processing " + full_file_path)
+	print("Importing data from " + full_file_path)
 	with open(full_file_path, 'rb') as f: 
 	    f.readline()
 	    f.readline()
@@ -110,6 +116,7 @@ def get_data_raw(full_file_path, channels_to_read):
 	            data[i] = (data[i]-ADC_zero)*El
 
 	all_channels = []
+	pre_processed_channels = []
 	analog_channels = []
 	time_data = [float(x)*1.0/sampling_rate for x in range(len(data[0]))]
 	for i in range(len(channel_names)):
@@ -118,9 +125,16 @@ def get_data_raw(full_file_path, channels_to_read):
 			analog_channels.append(mcs_analog_channel)
 		else:
 			if(int(channel_names[i][-2:]) in channels_to_read):
-				mcs_data_channel = MCS_Data_Channel(data[i], time_data, int(channel_names[i][-2:]), sampling_rate)
-				all_channels.append(mcs_data_channel)
+				pre_processed_channel = MCS_Preprocessed_Channel(data[i], time_data, int(channel_names[i][-2:]), sampling_rate)
+				pre_processed_channels.append(pre_processed_channel)
 
+	#print("Processing channels...")
+	for c in pre_processed_channels:
+		t = threading.Thread(target=process_channel, args = (all_channels, c))
+		t.daemon = True
+		t.start()	  
+
+	#print(len(all_channels))
 	return all_channels, analog_channels, sampling_rate
 
 
@@ -149,6 +163,7 @@ def get_data_txt(full_file_path, channels_to_read):
 
 
 		all_channel_data = []
+		pre_processed_channels = []
 		analog_channel_data = []
 		for i in range(0, len(channel_numbers)):
 			all_channel_data.append([])
@@ -161,8 +176,8 @@ def get_data_txt(full_file_path, channels_to_read):
 					all_channel_data[i].append(float(data_line[i]))
 		for i in range(0, len(channel_numbers)):
 			if all_channel_data[i]:
-				mcs_data_channel = MCS_Data_Channel(all_channel_data[i], time_data, int(channel_numbers[i]), sampling_rate)
-				all_channels.append(mcs_data_channel)
+				pre_processed_channel = MCS_Preprocessed_Channel(all_channel_data[i], time_data, int(channel_numbers[i]), sampling_rate)
+				pre_processed_channels.append(pre_processed_channel)
 
 		if analog_channel_numbers:
 			mcs_analog_channel = MCS_Analog_Channel(analog_channel_data, time_data, analog_channel_numbers[0])
@@ -170,7 +185,11 @@ def get_data_txt(full_file_path, channels_to_read):
 
 		
 
-	
+	for c in pre_processed_channels:
+		t = threading.Thread(target=process_channel, args = (all_channels, c))
+		t.daemon = True
+		t.start()
+
 	return all_channels, analog_channels, sampling_rate
 	
 	

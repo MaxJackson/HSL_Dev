@@ -1,4 +1,4 @@
-import os, time, math
+import os, time, math, threading
 import matplotlib.pyplot as plt 
 import numpy as np
 from matplotlib.widgets import SpanSelector
@@ -216,6 +216,9 @@ class MCS_Data_Channel(object):
         data_std = np.std(data)
         return data_mean, data_std
 
+    def make_spike(self, channel_number, this_spike_voltage_data, this_spike_time_data, spike_array):
+        spike_array.append(MCS_Spike(channel_number, this_spike_voltage_data, this_spike_time_data))
+
     def get_spikes(self, channel_number, voltage_data, time_data, spike_threshold):
         """
         This function scans the voltage data of a channel for crossings of the spike threshold, grabbing data around that threshold and generating MCS_Spikes from that data. 
@@ -240,8 +243,12 @@ class MCS_Data_Channel(object):
                 if voltage_data[index] > spike_threshold:
                     this_spike_voltage_data = voltage_data[index-spike_window_start:index+spike_window_end]
                     this_spike_time_data = time_data[index-spike_window_start:index+spike_window_end]
-                    this_spike = MCS_Spike(channel_number, this_spike_voltage_data, this_spike_time_data)
-                    all_spikes.append(this_spike)
+                    #this_spike = MCS_Spike(channel_number, this_spike_voltage_data, this_spike_time_data)
+                    #all_spikes.append(this_spike)
+                    t = threading.Thread(target=self.make_spike, args = (channel_number, this_spike_voltage_data, this_spike_time_data, all_spikes))
+                    t.daemon = True
+                    t.start()   
+                    #self.make_spike(channel_number, this_spike_voltage_data, this_spike_time_data, all_spikes)
                     pass_index = index + spike_window_end
         return all_spikes
 
@@ -288,6 +295,14 @@ class MCS_Analog_Channel:
         self.voltage_data = voltage_data
         self.time_data = time_data
         self.channel_name = channel_name
+
+class MCS_Preprocessed_Channel:
+
+    def __init__(self, voltage_data, time_data, channel_name, sampling_rate):
+        self.voltage_data = voltage_data
+        self.time_data = time_data
+        self.channel_name = channel_name
+        self.sampling_rate = sampling_rate
 
 
 

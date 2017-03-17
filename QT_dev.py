@@ -28,7 +28,10 @@ def main():
 			cmea_positions = []
 
 			channels_to_read = cmea_electrodes
+			start = time.time()
 			all_channels, analog_channels, sampling_rate = get_data(full_file_path, channels_to_read)
+			end = time.time()
+			print("Time: " + str(end-start))
 
 			# print(len(analog_channels))
 			# plt.plot(analog_channels[0].voltage_data)
