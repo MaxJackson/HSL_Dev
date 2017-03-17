@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "QT_dev.py", line 32, in main
-    all_channels, analog_channels, sampling_rate = get_data(full_file_path, channels_to_read)
-  File "/home/max/Documents/HSL/HSL_Dev/hsl_lib/MCS_Functions.py", line 68, in get_data
-    all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path, channels_to_read)
-  File "/home/max/Documents/HSL/HSL_Dev/hsl_lib/MCS_Functions.py", line 180, in get_data_txt
-    pre_processed_channels.append(mcs_data_channel)
-NameError: global name 'mcs_data_channel' is not defined
-

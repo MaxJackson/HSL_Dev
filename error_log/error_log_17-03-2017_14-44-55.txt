@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "QT_dev.py", line 31, in main
-    all_channels, analog_channels, sampling_rate = get_data(full_file_path, channels_to_read)
-  File "/home/max/Documents/HSL/HSL_Dev/hsl_lib/MCS_Functions.py", line 70, in get_data
-    all_channels, analog_channels, sampling_rate = get_data_raw(full_file_path, channels_to_read)
-  File "/home/max/Documents/HSL/HSL_Dev/hsl_lib/MCS_Functions.py", line 133, in get_data_raw
-    t = threading.Thread(target=process_channel, args = (all_channels, c))
-NameError: global name 'threading' is not defined
-
