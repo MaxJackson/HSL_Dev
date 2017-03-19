@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "QT_dev.py", line 35, in main
-    cmea_electrodes)
-  File "/home/max/Documents/HSL/HSL_Dev/hsl_lib/MCS_Functions.py", line 69, in get_data
-    all_channels, analog_channels, sampling_rate = get_data_txt(full_file_path, channels_to_read)
-  File "/home/max/Documents/HSL/HSL_Dev/hsl_lib/MCS_Functions.py", line 155, in get_data_txt
-    lines = f.readlines()
-KeyboardInterrupt
-
