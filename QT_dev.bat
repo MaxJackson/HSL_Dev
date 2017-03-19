@@ -1,2 +1,2 @@
-python QT_dev.py
+python qt_dev.py
 pause
