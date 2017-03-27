@@ -26,7 +26,7 @@ def main():
 
     #full_file_path = get_filename()
 
-    #filenames = get_filenames
+    filenames = get_filenames()
 
     for full_file_path in filenames:
         try:    
