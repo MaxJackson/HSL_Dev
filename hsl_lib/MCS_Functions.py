@@ -16,11 +16,11 @@ def check_dir(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-def save_workbook(wb):
+def save_workbook(analysis_type, wb):
     output_dir = os.getcwd() + '/Results/'
     check_dir(output_dir)
     date_time = time.strftime("%d-%m-%Y") + "_" + time.strftime("%H-%M-%S")
-    excel_file =  output_dir + "CV_Results-" + date_time + ".txt"
+    excel_file =  output_dir + analysis_type + "_Results-" + date_time + ".txt"
 
 def log_error(file, error):
     error_dir = os.getcwd() + "/error_log/"

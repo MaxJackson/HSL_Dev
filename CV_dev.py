@@ -69,7 +69,7 @@ def main():
             log_error(full_file_path, e)
 
     
-    save_workbook(wb)
+    save_workbook('CV', wb)
     
     print("Done!")
 
