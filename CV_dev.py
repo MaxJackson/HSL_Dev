@@ -35,6 +35,7 @@ def main():
 
     ws['A1'] = "File"
     ws['B1'] = "CV (mean)"
+    ws['C1'] = "Frequency (Hz)"
 
     ws_row = 2
     for full_file_path in filenames:
@@ -55,6 +56,7 @@ def main():
 
             #conduction_intervals = 
             spike_time_differences = get_spike_time_differences(channels_to_compare, start_time, end_time)
+            spike_frequency = (len(spike_time_differences) + 1) / (end_time - start_time)
             distance = cmea_distances[cmea_electrodes.index(channels_to_compare[0].channel_number)] - cmea_distances[cmea_electrodes.index(channels_to_compare[1].channel_number)]
 
             conduction_velocity_mean = distance / np.mean(spike_time_differences) 
@@ -63,6 +65,7 @@ def main():
         
             ws.cell(row=ws_row, column=1, value = full_file_path)
             ws.cell(row=ws_row, column=2, value = conduction_velocity_mean)
+            ws.cell(row=ws_row, column=3, value = spike_frequency)
             ws_row = ws_row + 1
         except:
             e = traceback.format_exc()
