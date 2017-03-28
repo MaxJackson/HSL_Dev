@@ -10,8 +10,9 @@ print("Importing Libraries...\n")
 import os, time, math, sys, traceback
 import matplotlib.pyplot as plt 
 import numpy as np
+from openpyxl import Workbook
 from hsl_lib.MCS_Objects import CV_Region_Selector
-from hsl_lib.MCS_Functions import get_data_txt, plot_mea_waveforms, plot_cmea_waveforms, get_channels_to_compare, get_spike_time_differences, get_filename, get_filenames, log_error
+from hsl_lib.MCS_Functions import get_data_txt, plot_mea_waveforms, plot_cmea_waveforms, get_channels_to_compare, get_spike_time_differences, get_filename, get_filenames, log_error, save_workbook
 
 
 
@@ -28,17 +29,18 @@ def main():
 
     filenames = get_filenames()
 
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Results"
+
+    ws['A1'] = "File"
+    ws['B1'] = "CV (mean)"
+
+    ws_row = 2
     for full_file_path in filenames:
         try:    
             all_channels, analog_channels, sampling_rate = get_data(full_file_path, channels_to_read)
 
-            # print(len(analog_channels))
-            # plt.plot(analog_channels[0].voltage_data)
-            # plt.show()
-            # a = raw_input(" ")
-
-            # print("Generating full-MEA waveform plots")
-            # plot_mea_waveforms(all_channels, full_file_path)
 
 
             plot_cmea_waveforms(all_channels, full_file_path)
@@ -58,10 +60,17 @@ def main():
             conduction_velocity_mean = distance / np.mean(spike_time_differences) 
 
             print("Conduction Velocity Mean: " + str(conduction_velocity_mean) + " m/s")
+        
+            ws.cell(row=ws_row, column=1, value = full_file_path)
+            ws.cell(row=ws_row, column=2, value = conduction_velocity_mean)
+            ws_row = ws_row + 1
         except:
             e = traceback.format_exc()
             log_error(full_file_path, e)
 
+    
+    save_workbook(wb)
+    
     print("Done!")
 
 if __name__ == '__main__':
