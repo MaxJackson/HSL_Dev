@@ -1,15 +1,24 @@
 from __future__ import print_function
-import os, time, threading
+import os, time, threading, sys
 import numpy as np
 
 #import neuroshare as ns
 import matplotlib.pyplot as plt
 from numpy import fromfile
-from Tkinter import Tk
+if sys.version_info[0] < 3:
+    from Tkinter import Tk
+    from tkFileDialog import askdirectory, askopenfilename, askopenfilenames
+    from MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike, MCS_Preprocessed_Channel
+
+
+else:
+    from tkinter import Tk
+    from tkinter.filedialog import askdirectory, askopenfilename, askopenfilenames
+    from .MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike, MCS_Preprocessed_Channel
+
+
 from matplotlib.mlab import PCA as mlabPCA
 from mpl_toolkits.mplot3d import Axes3D
-from tkFileDialog import askdirectory, askopenfilename, askopenfilenames
-from MCS_Objects import MCS_Data_Channel, MCS_Analog_Channel, MCS_Spike, MCS_Preprocessed_Channel
 
 
 def check_dir(directory):
